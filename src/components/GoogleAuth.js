@@ -2,6 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { signIn, signOut } from '../actions'
 
+// Component defined for single Oauth reference (Not typical Redux conventional practice)
+// Google authentication object for console -> gapi.auth2.getAuthInstance()
+
 class GoogleAuth extends React.Component {
     
 
@@ -13,7 +16,9 @@ class GoogleAuth extends React.Component {
             })
             .then(() => {
                 this.auth = window.gapi.auth2.getAuthInstance();
+                //Update auth state inside of redux store
                 this.onAuthChange(this.auth.isSignedIn.get());
+                //Wait for authentication status to change
                 this.auth.isSignedIn.listen(this.onAuthChange);
             });
         });
@@ -27,6 +32,7 @@ class GoogleAuth extends React.Component {
        }
     };
 
+    //Defined event handlers for ease-of-reading
     onSignInClick = () => {
         this.auth.signIn();
     };
